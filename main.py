@@ -34,7 +34,7 @@ app.add_middleware(
 
 # Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-OFFICIAL_EMAIL = os.getenv("OFFICIAL_EMAIL", "your.email@chitkara.edu.in")
+OFFICIAL_EMAIL = os.getenv("OFFICIAL_EMAIL", "pratham3906.beai23@chitkara.edu.in")
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
