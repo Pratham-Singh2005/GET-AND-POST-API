@@ -23,6 +23,10 @@ wheels/
 .installed.cfg
 *.egg
 
+# Environment variables
+.env
+.env.local
+
 # IDEs
 .vscode/
 .idea/
@@ -33,7 +37,3 @@ wheels/
 # OS
 .DS_Store
 Thumbs.db
-
-# Environment variables
-.env
-.env.local

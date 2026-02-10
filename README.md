@@ -1,30 +1,40 @@
-# Health Check API - FastAPI
+# BFHL Combined API - FastAPI
 
-Production-ready GET REST API `/health` endpoint built with Python and FastAPI.
+Production-ready REST API with POST `/bfhl` and GET `/health` endpoints built with Python and FastAPI.
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Pratham-Singh2005/GET-API.git
+cd GET-API
+```
+
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Your Email
+### 3. Configure Environment Variables
 
-Open `main.py` and replace the placeholder email:
+Create a `.env` file in the root directory:
 
-```python
-OFFICIAL_EMAIL = "your.email@chitkara.edu.in"  # Replace with your actual Chitkara email
+```bash
+OFFICIAL_EMAIL=your.email@chitkara.edu.in
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### 3. Run the Server
+> **Note:** Get your Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+
+### 4. Run the Server
 
 ```bash
 python main.py
 ```
 
-Or using uvicorn directly:
+Or using uvicorn:
 
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -32,15 +42,19 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 The API will be available at: `http://localhost:8000`
 
+---
+
 ## 📋 API Documentation
 
-### Health Check Endpoint
+### 1. GET /health - Health Check
 
 **Endpoint:** `GET /health`
 
-**No Request Body** | **No Query Parameters**
+**Description:** Health check endpoint that always responds when the server is running.
 
-#### ✅ Success Response (HTTP 200)
+**Request:** No parameters required
+
+**Success Response (HTTP 200):**
 
 ```json
 {
@@ -49,7 +63,7 @@ The API will be available at: `http://localhost:8000`
 }
 ```
 
-#### ❌ Error Response (HTTP 500)
+**Error Response (HTTP 500):**
 
 ```json
 {
@@ -59,56 +73,335 @@ The API will be available at: `http://localhost:8000`
 }
 ```
 
-## 🧪 Testing the Endpoint
-
-### Using cURL
+**Test with cURL:**
 
 ```bash
-curl http://localhost:8000/health
+curl https://your-deployed-api.com/health
 ```
 
-### Using PowerShell (Windows)
+**Test with PowerShell:**
 
 ```powershell
-Invoke-RestMethod -Uri http://localhost:8000/health -Method Get
+Invoke-RestMethod -Uri https://your-deployed-api.com/health -Method Get
 ```
 
-### Using Browser
+---
 
-Simply open: `http://localhost:8000/health`
+### 2. POST /bfhl - Operations Endpoint
 
-### Interactive API Docs
+**Endpoint:** `POST /bfhl`
+
+**Description:** Performs various mathematical and AI operations. Only one key allowed per request.
+
+**Request Body:** JSON with exactly ONE of the following keys:
+
+#### Operation 1: Fibonacci
+
+```json
+{
+  "fibonacci": 5
+}
+```
+
+**Response:**
+
+```json
+{
+  "is_success": true,
+  "official_email": "your.email@chitkara.edu.in",
+  "data": [0, 1, 1, 2, 3]
+}
+```
+
+#### Operation 2: Prime Numbers
+
+```json
+{
+  "prime": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+```
+
+**Response:**
+
+```json
+{
+  "is_success": true,
+  "official_email": "your.email@chitkara.edu.in",
+  "data": [2, 3, 5, 7]
+}
+```
+
+#### Operation 3: LCM (Least Common Multiple)
+
+```json
+{
+  "lcm": [12, 15, 20]
+}
+```
+
+**Response:**
+
+```json
+{
+  "is_success": true,
+  "official_email": "your.email@chitkara.edu.in",
+  "data": 60
+}
+```
+
+#### Operation 4: HCF (Highest Common Factor)
+
+```json
+{
+  "hcf": [12, 15, 20]
+}
+```
+
+**Response:**
+
+```json
+{
+  "is_success": true,
+  "official_email": "your.email@chitkara.edu.in",
+  "data": 1
+}
+```
+
+#### Operation 5: AI Query (Google Gemini)
+
+```json
+{
+  "AI": "What is the capital of France?"
+}
+```
+
+**Response:**
+
+```json
+{
+  "is_success": true,
+  "official_email": "your.email@chitkara.edu.in",
+  "data": "Paris"
+}
+```
+
+**Error Response (HTTP 400/500):**
+
+```json
+{
+  "is_success": false,
+  "official_email": "your.email@chitkara.edu.in",
+  "error": "Error description"
+}
+```
+
+**Test with cURL:**
+
+```bash
+curl -X POST https://your-deployed-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"fibonacci": 5}'
+```
+
+**Test with PowerShell:**
+
+```powershell
+$body = @{fibonacci = 5} | ConvertTo-Json
+Invoke-RestMethod -Uri https://your-deployed-api.com/bfhl -Method Post -Body $body -ContentType "application/json"
+```
+
+---
+
+## 🧪 Testing Locally
+
+### Interactive API Documentation
 
 FastAPI provides automatic interactive documentation:
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+
+- **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+---
+
+## 🌐 Deployment Guide
+
+### Option 1: Deploy to Render (Recommended)
+
+1. **Create account** at [render.com](https://render.com)
+2. Click **"New +"** → **"Web Service"**
+3. Connect your GitHub repository
+4. Configure:
+   - **Name:** `bfhl-api`
+   - **Runtime:** Python 3
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Add **Environment Variables:**
+   - `OFFICIAL_EMAIL` = your.email@chitkara.edu.in
+   - `GEMINI_API_KEY` = your_api_key
+6. Click **"Create Web Service"**
+7. Wait for deployment (~5 minutes)
+8. Copy your public URL: `https://bfhl-api.onrender.com`
+
+### Option 2: Deploy to Railway
+
+1. **Create account** at [railway.app](https://railway.app)
+2. Click **"New Project"** → **"Deploy from GitHub repo"**
+3. Select your repository
+4. Add **Environment Variables:**
+   - `OFFICIAL_EMAIL`
+   - `GEMINI_API_KEY`
+5. Railway auto-detects Python and deploys
+6. Copy your public URL from settings
+
+### Option 3: Deploy to Vercel
+
+1. **Install Vercel CLI:**
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Create `vercel.json`:**
+   ```json
+   {
+     "builds": [
+       {
+         "src": "main.py",
+         "use": "@vercel/python"
+       }
+     ],
+     "routes": [
+       {
+         "src": "/(.*)",
+         "dest": "main.py"
+       }
+     ]
+   }
+   ```
+
+3. **Deploy:**
+   ```bash
+   vercel --prod
+   ```
+
+4. **Add environment variables** in Vercel dashboard
+
+---
 
 ## ✨ Features
 
-✅ **No Authentication Required** - Publicly accessible  
-✅ **Never Crashes** - Proper error handling with try-catch  
-✅ **Consistent Response Structure** - Strict JSON schema  
+✅ **Two Production Endpoints** - POST `/bfhl` and GET `/health`  
+✅ **Multiple Operations** - Fibonacci, Prime, LCM, HCF, AI  
+✅ **Google Gemini Integration** - AI-powered responses  
+✅ **Input Validation** - Comprehensive error handling  
+✅ **CORS Enabled** - Cross-origin requests supported  
+✅ **Auto Documentation** - Swagger UI & ReDoc  
+✅ **Environment Variables** - Secure configuration  
+✅ **Never Crashes** - Robust error handling  
 ✅ **FastAPI Best Practices** - Type hints, response models, logging  
-✅ **Production Ready** - Clean, minimal, exam-ready code  
-✅ **Valid JSON Only** - No extra fields  
-✅ **Always Responds** - Returns 200 when server is running  
+
+---
 
 ## 📦 Project Structure
 
 ```
-GET API/
-├── main.py              # FastAPI application
+GET-API/
+├── main.py              # FastAPI application with both endpoints
 ├── requirements.txt     # Python dependencies
+├── .env.example         # Environment variable template
+├── .gitignore          # Git ignore rules
 └── README.md           # This file
 ```
 
-## 🎯 Evaluation Criteria (All Met)
+---
 
-- ✅ Uses FastAPI best practices
-- ✅ Returns valid JSON only
-- ✅ No extra fields in response
-- ✅ No authentication required
-- ✅ API is publicly accessible
-- ✅ Response structure is consistent
-- ✅ Endpoint never crashes
-- ✅ Clean, minimal, exam-ready code
+## 🔧 Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OFFICIAL_EMAIL` | Yes | Your Chitkara University email |
+| `GEMINI_API_KEY` | Yes (for AI) | Google Gemini API key for AI operations |
+
+---
+
+## 📝 Sample Requests
+
+### Health Check
+
+```bash
+curl https://your-api.com/health
+```
+
+### Fibonacci
+
+```bash
+curl -X POST https://your-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"fibonacci": 10}'
+```
+
+### Prime Numbers
+
+```bash
+curl -X POST https://your-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"prime": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}'
+```
+
+### LCM
+
+```bash
+curl -X POST https://your-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"lcm": [12, 15, 20]}'
+```
+
+### HCF
+
+```bash
+curl -X POST https://your-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"hcf": [48, 18]}'
+```
+
+### AI Query
+
+```bash
+curl -X POST https://your-api.com/bfhl \
+  -H "Content-Type: application/json" \
+  -d '{"AI": "What is the capital of India?"}'
+```
+
+---
+
+## 🎯 Submission Requirements (All Met)
+
+✅ **Public GitHub Repository** - Source code publicly available  
+✅ **Full Source Code** - Complete `main.py` with both endpoints  
+✅ **requirements.txt** - All dependencies listed  
+✅ **README with API Usage** - Comprehensive documentation  
+✅ **Both APIs in Same Repository** - POST /bfhl + GET /health  
+✅ **Deployment Ready** - Instructions for Render/Railway/Vercel  
+✅ **Sample Requests** - cURL and PowerShell examples provided  
+
+---
+
+## 📄 License
+
+MIT License - Free to use for educational purposes
+
+---
+
+## 👨‍💻 Author
+
+**Pratham Singh**  
+Chitkara University  
+GitHub: [@Pratham-Singh2005](https://github.com/Pratham-Singh2005)
+
+---
+
+## 🆘 Support
+
+For issues or questions:
+- Open an issue on GitHub
+- Check the interactive docs at `/docs`
+- Review the API examples above
