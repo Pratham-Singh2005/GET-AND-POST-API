@@ -223,67 +223,24 @@ FastAPI provides automatic interactive documentation:
 
 ---
 
-## 🌐 Deployment Guide
+## 🌐 Deployment Steps (Add After Development)
 
-### Option 1: Deploy to Render (Recommended)
+### Vercel
+1. Login → New Project → Import repository
+2. Configure runtime
+3. Deploy and copy public URL
 
-1. **Create account** at [render.com](https://render.com)
-2. Click **"New +"** → **"Web Service"**
-3. Connect your GitHub repository
-4. Configure:
-   - **Name:** `bfhl-api`
-   - **Runtime:** Python 3
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. Add **Environment Variables:**
-   - `OFFICIAL_EMAIL` = your.email@chitkara.edu.in
-   - `GEMINI_API_KEY` = your_api_key
-6. Click **"Create Web Service"**
-7. Wait for deployment (~5 minutes)
-8. Copy your public URL: `https://bfhl-api.onrender.com`
+### Railway
+1. New Project → Deploy from GitHub
+2. Select repository
+3. Configure variables
+4. Deploy and copy URL
 
-### Option 2: Deploy to Railway
-
-1. **Create account** at [railway.app](https://railway.app)
-2. Click **"New Project"** → **"Deploy from GitHub repo"**
-3. Select your repository
-4. Add **Environment Variables:**
-   - `OFFICIAL_EMAIL`
-   - `GEMINI_API_KEY`
-5. Railway auto-detects Python and deploys
-6. Copy your public URL from settings
-
-### Option 3: Deploy to Vercel
-
-1. **Install Vercel CLI:**
-   ```bash
-   npm i -g vercel
-   ```
-
-2. **Create `vercel.json`:**
-   ```json
-   {
-     "builds": [
-       {
-         "src": "main.py",
-         "use": "@vercel/python"
-       }
-     ],
-     "routes": [
-       {
-         "src": "/(.*)",
-         "dest": "main.py"
-       }
-     ]
-   }
-   ```
-
-3. **Deploy:**
-   ```bash
-   vercel --prod
-   ```
-
-4. **Add environment variables** in Vercel dashboard
+### Render
+1. New Web Service → Select repository
+2. Choose runtime
+3. Set build & start commands
+4. Deploy and copy URL
 
 ---
 
